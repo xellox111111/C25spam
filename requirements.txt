@@ -1,0 +1,6 @@
+flask
+requests
+urllib3
+beautifulsoup4
+fastapi
+uvicorn
