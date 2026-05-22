@@ -3,7 +3,7 @@ import threading
 import time
 import sys
 
-sys.path.append("/home/ubuntu/upload")
+
 import spamsdt_cleaned
 
 app = Flask(__name__)
