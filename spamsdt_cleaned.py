@@ -9781,5 +9781,61 @@ def run_main():
     print("HOÀN THÀNH TẤT CẢ CÁC TIẾN TRÌNH")
     print("="*60)
 
+# =============================================================================
+# KHỞI CHẠY CHƯƠNG TRÌNH (CHỈ CHẠY KHI BẬT TRỰC TIẾP FILE NÀY)
+# =============================================================================
 if __name__ == "__main__":
-    run_main()
+    try:
+        choice = input("Nhập lựa chọn của bạn (1-3): ")
+        phone = input("Nhập SĐT: ")
+        
+        sms_count = 0
+        call_count = 0
+
+        if choice == '1':
+            sms_count = int(input("Nhập số lần SMS: "))
+        elif choice == '2':
+            call_count = int(input("Nhập số lần CALL: "))
+        elif choice == '3':
+            print("\n--- CẤU HÌNH CHẠY SONG SONG ---")
+            sms_count = int(input("Nhập số lần SMS: "))
+            call_count = int(input("Nhập số lần CALL: "))
+        else:
+            print("Lựa chọn không hợp lệ!")
+            sys.exit()
+
+        # ĐƯA ĐOẠN NÀY VÀO TRONG KHỐI TRY ĐỂ ĐẢM BẢO KHÔNG BỊ LỖI THIẾT KẾ BIẾN
+        print("\n" + "="*60)
+        print(f"BẮT ĐẦU KÍCH HOẠT CHO: {phone}")
+        print(f"Chế độ: {choice} | SMS: {sms_count} lần | CALL: {call_count} lần")
+        print(f"Thời gian bắt đầu: {datetime.now().strftime('%H:%M:%S')}")
+        print("="*60)
+
+        threads = []
+
+        # Khởi tạo luồng SMS
+        if sms_count > 0:
+            t_sms = threading.Thread(target=worker_sms, args=(phone, sms_count))
+            threads.append(t_sms)
+            t_sms.start()
+
+        # Khởi tạo luồng Call
+        if call_count > 0:
+            t_call = threading.Thread(target=worker_call, args=(phone, call_count))
+            threads.append(t_call)
+            t_call.start()
+
+        # Chờ các luồng hoàn thành
+        for t in threads:
+            t.join()
+
+        print("\n" + "="*60)
+        print("HOÀN THÀNH TẤT CẢ CÁC TIẾN TRÌNH")
+        print("="*60)
+
+    except ValueError:
+        print("Vui lòng nhập số hợp lệ!")
+        sys.exit()
+    except KeyboardInterrupt:
+        print("\nĐã dừng chương trình.")
+        sys.exit()
