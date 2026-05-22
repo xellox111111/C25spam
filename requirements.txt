@@ -4,3 +4,6 @@ urllib3
 beautifulsoup4
 fastapi
 uvicorn
+flask
+
+stem
